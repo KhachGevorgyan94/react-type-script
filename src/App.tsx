@@ -1,7 +1,9 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Box} from "./components/box";
 import {IUserData} from "./models/user.model";
-
+import ReactDatePicker from "react-datepicker";
+import './assets/style/index.scss'
+import axios, {AxiosResponse} from "axios";
 
 /**
  *  TypeScript projkect@ install anelu hamar reacti mijocov  grum eqn hetevyal hraman@
@@ -10,45 +12,46 @@ import {IUserData} from "./models/user.model";
  *  any -  da nshanakum e amen inch karox e @Nddunel mer parametr@
  * **/
 
-interface IProfile {
+interface IProductData {
+    categoryId: string,
+    color: string,
+    description: string,
+    image: string,
     name: string,
-    age: number,
-    position?: string
+    price: number,
+    rate: number,
+    size: string[],
+    _id: string
 }
 
 function App() {
-    const [counter, setCounter] = useState<number>(0)
-    let numbersValue: string = 'fldkghdflkg'
-    // numbersValue
+    const [productList,setProductList] = useState<IProductData[]>([])
 
 
-    const profile: IProfile = {
-        name: '24234234',
-        age: 2342354,
-    }
+    useEffect(() => {
+        getProductList()
+    }, [])
 
 
-    let isCheck: boolean = true
-    const userData: IUserData = {
-        firstName: 'khachik',
-        lastName: 'gevorgyan',
-        age: 123234,
-        position: 'skdjfhaksjhdg',
-        address: {
-            city: 'kjdahjsd',
-            postCode: 345345
+    const getProductList = async () => {
+        const result = await axios.get<null,AxiosResponse<IProductData[]>>('https://crudcrud.com/api/9e6dd515c4cb4eac9edac88b7b70617d/productH')
+        if (result) {
+            console.log(result.data)
+            setProductList(result.data)
         }
     }
 
-    const counterFunction = (test: string) => {
-        setCounter(counter + 1)
-    }
+    // function GET(url:string, data:any){
+    //     axios.get(url, data)
+    // }
 
     return (
         <div>
-            <Box onCounter={counterFunction} data={userData} index={42}/>
-
-            <p>{counter}</p>
+            {productList.map((item,index)=>{
+                return <div>
+                    {item.name}
+                </div>
+            })}
         </div>
     );
 }
