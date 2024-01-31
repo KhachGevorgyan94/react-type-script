@@ -1,12 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import {Box} from "./components/box";
-import {IUserData} from "./models/user.model";
-import ReactDatePicker from "react-datepicker";
-import './assets/style/index.scss'
-import axios, {AxiosResponse} from "axios";
-import {AuthSlice, setTokenData} from "./store/redusers/authSlice";
-import {useSelector} from "react-redux";
+import {setTokenData} from "./store/redusers/auth/authSlice";
+import {useDispatch, useSelector} from "react-redux";
 import {useAppSelector} from "./hooks/redux";
+import {RootState} from "./store";
+import {fetchProductDatta} from "./store/redusers/auth/extra-actions";
 
 /**
  *  TypeScript projkect@ install anelu hamar reacti mijocov  grum eqn hetevyal hraman@
@@ -28,7 +25,12 @@ interface IProductData {
 }
 
 function App() {
-
+    const dispatch = useDispatch()
+    const isLoading = useAppSelector(state=>state.authSlice.isLoading)
+    useEffect(() => {
+        dispatch(fetchProductDatta() as any)
+    }, []);
+    // let x = useSelector((state:RootState)=>state.)
     // const tokenData = useAppSelector(state=>state.authSlice)
     // const [productList,setProductList] = useState<IProductData[]>([])
     //
@@ -67,7 +69,7 @@ function App() {
             {/*    </div>*/}
             {/*})}*/}
 
-            <button >Set Token</button>
+            <button >{isLoading? 'loadin.....': 'Set Token'}</button>
         </div>
     );
 }

@@ -1,12 +1,17 @@
-import {combineReducers, configureStore} from '@reduxjs/toolkit'
-// ...
-import authSlice from './redusers/authSlice'
+import {combineReducers, configureStore, Tuple} from '@reduxjs/toolkit'
+import logger from 'redux-logger'
+import authSlice from './redusers/auth/authSlice'
+
 const rootReducer = combineReducers({
     authSlice
 })
 
 export const store = configureStore({
     reducer: rootReducer,
+    middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware()
+            // prepend and concat calls can be chained
+            .concat(logger),
 })
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
