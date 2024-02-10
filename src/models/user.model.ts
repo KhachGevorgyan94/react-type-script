@@ -18,3 +18,18 @@ export interface IProfileData extends IUserData {
     isVerify: boolean
 }
 
+
+
+
+export interface IToDoItem{
+    value:string,
+    _id?:string
+}
+
+
+
+export interface IUserModel{
+    firstName:string,
+    lastName:string,
+    _id?:string
+}

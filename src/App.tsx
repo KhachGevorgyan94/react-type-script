@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import {setTokenData} from "./store/redusers/auth/authSlice";
 import {useDispatch, useSelector} from "react-redux";
 import {useAppSelector} from "./hooks/redux";
-import {RootState} from "./store";
 import {fetchProductDatta} from "./store/redusers/auth/extra-actions";
+import {addToDoList, getToDoList} from "./store/redusers/todoSlize/extra-actions";
+import {PostApi, useGetProductsQuery} from "./store/redusers/auth/auth-query";
+import {UsersList} from "./components/users-list";
 
 /**
  *  TypeScript projkect@ install anelu hamar reacti mijocov  grum eqn hetevyal hraman@
@@ -11,65 +12,39 @@ import {fetchProductDatta} from "./store/redusers/auth/extra-actions";
  *  npx create-react-app  <folderName> || .  --template typescript
  *  any -  da nshanakum e amen inch karox e @Nddunel mer parametr@
  * **/
-
-interface IProductData {
-    categoryId: string,
-    color: string,
-    description: string,
-    image: string,
-    name: string,
-    price: number,
-    rate: number,
-    size: string[],
-    _id: string
-}
-
 function App() {
-    const dispatch = useDispatch()
-    const isLoading = useAppSelector(state=>state.authSlice.isLoading)
-    useEffect(() => {
-        dispatch(fetchProductDatta() as any)
-    }, []);
-    // let x = useSelector((state:RootState)=>state.)
-    // const tokenData = useAppSelector(state=>state.authSlice)
-    // const [productList,setProductList] = useState<IProductData[]>([])
+
+    // const {data:postList, isLoading, error } = useGetProductsQuery({
+    //
+    // }).
+
+    const {data,isLoading, error,refetch} = useGetProductsQuery(null)
+    // const [getProducts, {data, isLoading}] = useGetProductsQuery(null)
+    // console.log(data)
+
+
+    // const [trigger, {data, isLoading}] = PostApi.endpoints.getProducts.useLazyQuery()
+    // const [inputValue, setInputValue] = useState<string>('')
+    //
+    // const loader = useAppSelector(state=>state.toDoSlize.loader)
+    // const list = useAppSelector(state=>state.toDoSlize.list)
     //
     //
+    //
+    // const dispatch = useDispatch()
     // useEffect(() => {
-    //     getProductList()
-    // }, [])
-    //
-    //
-    // const getProductList = async () => {
-    //     const result = await axios.get<null,AxiosResponse<IProductData[]>>('https://crudcrud.com/api/9e6dd515c4cb4eac9edac88b7b70617d/productH')
-    //     if (result) {
-    //         console.log(result.data)
-    //         setProductList(result.data)
-    //     }
-    // }
-
-    // function GET(url:string, data:any){
-    //     axios.get(url, data)
-    // }
-
-    const handleClick = ()=>{
-        setTokenData('468sdf90g-78s-d98gus[9t')
-
-    }
-
-    useEffect(() => {
-
-    }, []);
+    //     dispatch(getToDoList() as any)
+    // }, []);
 
     return (
         <div>
-            {/*{productList.map((item,index)=>{*/}
-            {/*    return <div>*/}
-            {/*        {item.name}*/}
-            {/*    </div>*/}
-            {/*})}*/}
+            {/*<button onClick={()=>{*/}
+            {/*    refetch()*/}
+            {/*}}>Click me</button>*/}
 
-            <button >{isLoading? 'loadin.....': 'Set Token'}</button>
+            {/*{isLoading ? <p>loading....</p> : null}*/}
+
+            <UsersList/>
         </div>
     );
 }

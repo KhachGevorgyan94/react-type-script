@@ -2,6 +2,7 @@ import {createSlice, PayloadAction, createAsyncThunk} from "@reduxjs/toolkit";
 import {IUserData} from "../../../models/user.model";
 import axios from "axios";
 import {fetchProductDatta} from "./extra-actions";
+// import {fetchProductDatta} from "./extra-actions";
 
 interface IAuthSlice {
     userData: IUserData | null,
@@ -70,10 +71,7 @@ export const authSlice = createSlice({
                 console.log('succeeded')
                 console.log(action.payload)
                 state.productList = action.payload
-
                 state.isLoading = false
-
-
             })
             .addCase(fetchProductDatta.rejected, (state, action) => {
                 // state.status = "failed";
