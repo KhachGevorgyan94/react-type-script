@@ -1,11 +1,14 @@
 import React, {useEffect, useState} from 'react';
-import {useDispatch, useSelector} from "react-redux";
-import {useAppSelector} from "./hooks/redux";
-import {fetchProductDatta} from "./store/redusers/auth/extra-actions";
-import {addToDoList, getToDoList} from "./store/redusers/todoSlize/extra-actions";
-import {PostApi, useGetProductsQuery} from "./store/redusers/auth/auth-query";
-import {UsersList} from "./components/users-list";
-
+import {useTranslation} from 'react-i18next';
+import ReactDatePicker, {registerLocale } from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import hy from "date-fns/locale/hy"; // the locale you want
+import ru from "date-fns/locale/ru"; // the locale you want
+import eng from "date-fns/locale/en-GB";
+import {LanuagesEnum, StatusEnum} from "./enums/lanuages.enum"; // the locale you want
+registerLocale("hy", hy);
+registerLocale("ru", ru);
+registerLocale("eng", eng);
 /**
  *  TypeScript projkect@ install anelu hamar reacti mijocov  grum eqn hetevyal hraman@
  *
@@ -13,38 +16,64 @@ import {UsersList} from "./components/users-list";
  *  any -  da nshanakum e amen inch karox e @Nddunel mer parametr@
  * **/
 function App() {
+    const [language, setLanguage] = useState('eng')
+    const {t, i18n} = useTranslation();
 
-    // const {data:postList, isLoading, error } = useGetProductsQuery({
-    //
-    // }).
+    const handleCLick = (value:string) => {
+        i18n.changeLanguage(value)
+        setLanguage(value)
+        localStorage.setItem('language', value)
+    }
 
-    const {data,isLoading, error,refetch} = useGetProductsQuery(null)
-    // const [getProducts, {data, isLoading}] = useGetProductsQuery(null)
-    // console.log(data)
+    const changeLanguageDatePicker = ()=>{
+        switch (language){
+            case LanuagesEnum[LanuagesEnum.english]:{
+                return eng
+            }
+            case LanuagesEnum[LanuagesEnum.armenian]:{
+                return hy
+            }
+            case LanuagesEnum[LanuagesEnum.russian]:{
+                return ru
+            }
+        }
+    }
 
+    useEffect(() => {
+        let lang = localStorage.getItem('language')
+        if(lang){
+            i18n.changeLanguage(lang)
+            setLanguage(lang)
+        }
+        console.log(LanuagesEnum[LanuagesEnum.english])
+    }, []);
 
-    // const [trigger, {data, isLoading}] = PostApi.endpoints.getProducts.useLazyQuery()
-    // const [inputValue, setInputValue] = useState<string>('')
-    //
-    // const loader = useAppSelector(state=>state.toDoSlize.loader)
-    // const list = useAppSelector(state=>state.toDoSlize.list)
-    //
-    //
-    //
-    // const dispatch = useDispatch()
-    // useEffect(() => {
-    //     dispatch(getToDoList() as any)
-    // }, []);
 
     return (
         <div>
-            {/*<button onClick={()=>{*/}
-            {/*    refetch()*/}
-            {/*}}>Click me</button>*/}
+            <ul>
+                <li onClick={() => {
+                    handleCLick('hy')
+                }}>HY
+                </li>
+                <li
+                    onClick={() => {
+                        handleCLick('eng')
+                    }}>ENG
+                </li>
+                <li
+                    onClick={() => {
+                        handleCLick('ru')
+                    }}>RU
+                </li>
+            </ul>
 
-            {/*{isLoading ? <p>loading....</p> : null}*/}
+            <p>{t('hello_world')}</p>
+            <ReactDatePicker locale={changeLanguageDatePicker()} onChange={()=>{
 
-            <UsersList/>
+            }}/>
+
+            {/*{StatusEnum.pending===0?<p>pending</p>: null}*/}
         </div>
     );
 }
