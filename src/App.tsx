@@ -1,81 +1,46 @@
-import React, {useEffect, useState} from 'react';
-import {useTranslation} from 'react-i18next';
-import ReactDatePicker, {registerLocale } from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import hy from "date-fns/locale/hy"; // the locale you want
-import ru from "date-fns/locale/ru"; // the locale you want
-import eng from "date-fns/locale/en-GB";
-import {LanuagesEnum, StatusEnum} from "./enums/lanuages.enum"; // the locale you want
-registerLocale("hy", hy);
-registerLocale("ru", ru);
-registerLocale("eng", eng);
-/**
- *  TypeScript projkect@ install anelu hamar reacti mijocov  grum eqn hetevyal hraman@
- *
- *  npx create-react-app  <folderName> || .  --template typescript
- *  any -  da nshanakum e amen inch karox e @Nddunel mer parametr@
- * **/
-function App() {
-    const [language, setLanguage] = useState('eng')
-    const {t, i18n} = useTranslation();
+import Box from "./components/box";
+import {useEffect, useState, useMemo} from "react";
 
-    const handleCLick = (value:string) => {
-        i18n.changeLanguage(value)
-        setLanguage(value)
-        localStorage.setItem('language', value)
-    }
+export const App = () => {
+    const [count, setCount] = useState(0);
+    const [todos, setTodos] = useState([]);
+    console.log('1111111111111111111')
+    const increment = () => {
+        setCount((c) => c + 1);
+    };
 
-    const changeLanguageDatePicker = ()=>{
-        switch (language){
-            case LanuagesEnum[LanuagesEnum.english]:{
-                return eng
-            }
-            case LanuagesEnum[LanuagesEnum.armenian]:{
-                return hy
-            }
-            case LanuagesEnum[LanuagesEnum.russian]:{
-                return ru
-            }
+
+    const expensiveCalculation = (num: number) => {
+        console.log("Calculating...");
+        for (let i = 0; i < 1000000000; i++) {
+            num += 1;
         }
-    }
+        return num;
+    };
 
-    useEffect(() => {
-        let lang = localStorage.getItem('language')
-        if(lang){
-            i18n.changeLanguage(lang)
-            setLanguage(lang)
-        }
-        console.log(LanuagesEnum[LanuagesEnum.english])
-    }, []);
+    const memoCount = useMemo(() => {
+        return expensiveCalculation(count)
+    }, [count])
 
+    // useEffect(() => {
+    //     expensiveCalculation(count)
+    // }, [count]);
+    const addTodo = () => {
+        setTodos((t: any): any => [...t, "New Todo"]);
+    };
 
-    return (
-        <div>
-            <ul>
-                <li onClick={() => {
-                    handleCLick('hy')
-                }}>HY
-                </li>
-                <li
-                    onClick={() => {
-                        handleCLick('eng')
-                    }}>ENG
-                </li>
-                <li
-                    onClick={() => {
-                        handleCLick('ru')
-                    }}>RU
-                </li>
-            </ul>
-
-            <p>{t('hello_world')}</p>
-            <ReactDatePicker locale={changeLanguageDatePicker()} onChange={()=>{
-
-            }}/>
-
-            {/*{StatusEnum.pending===0?<p>pending</p>: null}*/}
-        </div>
-    );
+    console.log(count)
+    console.log(memoCount)
+    return <div>
+        {todos.map((todo, index) => {
+            return <p key={index}>{todo}</p>;
+        })}
+        <p>{count}</p>
+        <p>memoCount {memoCount}</p>
+        <button onClick={increment}>click
+        </button>
+        <button onClick={addTodo}>click
+        </button>
+        {/*<Box counter={counter}/>*/}
+    </div>
 }
-
-export default App;
